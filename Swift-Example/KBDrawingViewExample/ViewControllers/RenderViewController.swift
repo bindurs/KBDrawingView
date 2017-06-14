@@ -8,21 +8,23 @@
 
 import UIKit
 class RenderViewController: UIViewController {
-   
+    
     var rendredImage = UIImage ()
-
+    
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var showImage: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         showImage.image = rendredImage;
-
     }
-  // MARK: - UIButton actions
+    // MARK: - UIButton actions
     
     @IBAction func saveBtnClicked(_ sender: UIBarButtonItem) {
         
+        self.view.bringSubview(toFront: activityIndicator)
+        activityIndicator.startAnimating()
         UIImageWriteToSavedPhotosAlbum(showImage.image!, self,#selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     override func didReceiveMemoryWarning() {
@@ -32,12 +34,16 @@ class RenderViewController: UIViewController {
     
     //MARK: - Add image to Library
     func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        
+        activityIndicator.stopAnimating()
+        
         if let error = error {
             // we got back an error!
             let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         } else {
+            
             let ac = UIAlertController(title: "Saved!", message: "Image has been saved to your photos.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                 self.navigationController?.popViewController(animated: true)
@@ -46,13 +52,13 @@ class RenderViewController: UIViewController {
         }
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

@@ -14,7 +14,6 @@ protocol SettingsViewControllerDelegate {
 }
 class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
-    @IBOutlet var tableViewHeight: NSLayoutConstraint!
     @IBOutlet var listTableView: UITableView!
     @IBOutlet var popupView: UIView!
     var delegate :SettingsViewControllerDelegate!
